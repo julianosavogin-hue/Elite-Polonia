@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10131a">
+<title>Elite da Polônia | Painel administrativo</title>
+<style>
+:root{--bg:#0b0e14;--panel:#151a24;--panel2:#1c2330;--line:#30394a;--txt:#f4f6fa;--muted:#9ba7b8;--red:#d83b48;--gold:#d7b66c;--green:#55c99a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#29202a 0,#0b0e14 48%);color:var(--txt);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:20px max(16px,calc((100% - 1120px)/2));border-bottom:1px solid var(--line);background:#0d1119ed;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:12px}.flag{font-size:30px}.brand h1{font-size:19px;margin:0;letter-spacing:1.3px}.brand small{color:var(--muted);letter-spacing:2px}
+main{max-width:1120px;margin:25px auto;padding:0 16px}.hero{display:flex;justify-content:space-between;align-items:end;gap:14px;margin-bottom:20px}.hero h2{font-size:clamp(24px,4vw,34px);margin:0 0 5px}.hero p{color:var(--muted);margin:0}.pill{border:1px solid #71404a;color:#ffadb3;border-radius:30px;padding:7px 12px;font-size:12px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.card,.section{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:15px;padding:16px}.card label,.muted{color:var(--muted);font-size:13px}.value{font-size:26px;font-weight:750;margin-top:5px}.green{color:var(--green)}.gold{color:var(--gold)}
+.tabs{display:flex;gap:8px;overflow:auto;margin:17px 0}.tab,button{border:1px solid var(--line);background:var(--panel);color:var(--txt);padding:10px 13px;border-radius:9px;cursor:pointer}.tab{white-space:nowrap;color:var(--muted)}.tab.active{background:#51232b;border-color:#a43b47;color:white}
+.layout{display:grid;grid-template-columns:1.1fr .9fr;gap:15px}.section{margin-bottom:15px}.section h3{margin:0 0 13px;font-size:17px}.field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:125px;margin-bottom:10px}.field label{font-size:12px;color:var(--muted)}input,select,textarea{width:100%;background:#0d121a;border:1px solid var(--line);border-radius:9px;color:var(--txt);padding:10px;font:inherit}input:focus,select:focus{outline:1px solid var(--gold)}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:end}.primary{background:var(--red);border-color:var(--red);font-weight:700}.subtle{color:var(--muted)}button:disabled{opacity:.4;cursor:not-allowed}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:470px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-weight:600}.empty{text-align:center;color:var(--muted);padding:22px}.notice{border-left:3px solid var(--gold);padding:10px 12px;background:#28251d;border-radius:7px;color:#e8d7aa;font-size:13px;line-height:1.5}.danger{background:#382027;border-color:#6e303b}.small{font-size:12px;color:var(--muted)}.hidden{display:none!important}.statline{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}footer{color:var(--muted);font-size:12px;text-align:center;padding:18px}
+@media(max-width:760px){.cards{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.hero{align-items:start;flex-direction:column}.value{font-size:23px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><span class="flag">🇵🇱</span><div><h1>ELITE DA POLÔNIA</h1><small>PAINEL ADMINISTRATIVO</small></div></div></header>
+<main>
+<div class="hero"><div><h2>Central de comando</h2><p>Gestão interna da organização • Reduto Online</p></div><span class="pill">ACESSO DA LIDERANÇA</span></div>
+<div class="notice" style="margin-bottom:15px">Versão inicial: os dados ficam salvos neste navegador/dispositivo. Ainda não há login seguro nem sincronização entre celulares. Não coloque senhas ou dados pessoais aqui.</div>
+<div class="cards">
+<div class="card"><label>Integrantes cadastrados</label><div class="value" id="memberCount">0 / 15</div></div>
+<div class="card"><label>Caixa da organização</label><div class="value gold" id="fundTotal">0</div><div class="small">dinheiro sujo registrado</div></div>
+<div class="card"><label>Arrecadação registrada</label><div class="value green" id="grossTotal">0</div></div>
+<div class="card"><label>Bônus atual</label><div class="value" id="bonusDisplay">0%</div><div class="small">policiais online</div></div>
+</div>
+<nav class="tabs">
+<button class="tab active" data-tab="dashboard">Visão geral</button><button class="tab" data-tab="members">Integrantes</button><button class="tab" data-tab="operations">Operações</button><button class="tab" data-tab="fund">Caixa</button><button class="tab" data-tab="ranking">Ranking</button>
+</nav>
+<section id="dashboard" class="page">
+<div class="layout">
+<div class="section"><h3>Resumo financeiro</h3>
+<div class="statline"><span class="muted">Lojinha (base)</span><b>40.000</b></div><div class="statline"><span class="muted">Caixinha (base)</span><b>90.000</b></div>
+<div class="field" style="margin-top:14px"><label>Policiais online (cada um = +1%)</label><input id="police" type="number" min="0" max="500" value="0"></div>
+<div class="statline"><span class="muted">Pagamento da lojinha</span><b class="green" id="shopPay">40.000</b></div><div class="statline"><span class="muted">Pagamento da caixinha</span><b class="green" id="boxPay">90.000</b></div>
+<p class="small">Cálculo: valor-base × (1 + policiais online ÷ 100). Confirme no jogo se a regra continua igual.</p>
+</div>
+<div class="section"><h3>Atalhos</h3><p class="muted">Cadastre a equipe, registre as atividades e acompanhe o dinheiro coletivo.</p><button class="primary" onclick="go('members')">Cadastrar integrante</button> <button onclick="go('operations')">Registrar operação</button></div>
+</div></section>
+<section id="members" class="page hidden">
+<div class="layout"><div class="section"><h3>Novo integrante</h3>
+<div class="field"><label>Nick no jogo</label><input id="mName" placeholder="Ex.: POLONIA01"></div>
+<div class="row"><div class="field"><label>Cargo</label><select id="mRole"><option>Integrante</option><option>Supervisor</option><option>Gerente</option><option>Diretor</option><option>Vice-presidente</option><option>Presidente</option></select></div><div class="field"><label>Status</label><select id="mStatus"><option>Ativo</option><option>Ausente</option><option>Em avaliação</option></select></div></div>
+<button class="primary" id="addMember">Adicionar à equipe</button><p class="small">Limite de 15 integrantes, contando a liderança.</p></div>
+<div class="section"><h3>Equipe cadastrada</h3><div class="tablewrap"><table><thead><tr><th>Nick</th><th>Cargo</th><th>Status</th><th></th></tr></thead><tbody id="membersBody"></tbody></table></div></div></div>
+</section>
+<section id="operations" class="page hidden">
+<div class="layout"><div class="section"><h3>Registrar atividade do jogo</h3>
+<div class="field"><label>Integrante</label><select id="opMember"></select></div>
+<div class="row"><div class="field"><label>Tipo</label><select id="opType"><option value="shop">Lojinha</option><option value="box">Caixinha</option><option value="other">Outro valor</option></select></div><div class="field"><label>Quantidade</label><input id="opQty" type="number" min="1" value="1"></div></div>
+<div class="field hidden" id="customWrap"><label>Valor total informado</label><input id="opCustom" type="number" min="0" value="0"></div>
+<div class="field"><label>Policiais online no momento</label><input id="opPolice" type="number" min="0" value="0"></div>
+<div class="field"><label>Observação (opcional)</label><input id="opNote" placeholder="Ex.: atividade registrada em 19/11"></div>
+<button class="primary" id="addOperation">Salvar registro</button></div>
+<div class="section"><h3>Histórico de atividades</h3><div class="tablewrap"><table><thead><tr><th>Data</th><th>Integrante</th><th>Atividade</th><th>Valor</th></tr></thead><tbody id="opsBody"></tbody></table></div></div></div>
+</section>
+<section id="fund" class="page hidden">
+<div class="layout"><div class="section"><h3>Movimentar caixa coletivo</h3>
+<div class="field"><label>Tipo de movimentação</label><select id="fundType"><option value="in">Entrada</option><option value="out">Saída</option></select></div>
+<div class="field"><label>Valor</label><input id="fundAmount" type="number" min="1" placeholder="Ex.: 20000"></div>
+<div class="field"><label>Descrição</label><input id="fundNote" placeholder="Ex.: contribuição acordada"></div>
+<button class="primary" id="addFund">Registrar movimentação</button></div>
+<div class="section"><h3>Extrato do caixa</h3><div id="fundBalance" class="value gold">0</div><div class="tablewrap"><table><thead><tr><th>Data</th><th>Movimento</th><th>Valor</th></tr></thead><tbody id="fundBody"></tbody></table></div></div></div>
+</section>
+<section id="ranking" class="page hidden"><div class="section"><h3>Ranking por arrecadação registrada</h3><p class="small">Soma das atividades registradas neste painel. Não representa confirmação automática do jogo.</p><div class="tablewrap"><table><thead><tr><th>Posição</th><th>Integrante</th><th>Arrecadação</th></tr></thead><tbody id="rankingBody"></tbody></table></div></div></section>
+<div class="section"><h3>Backup e manutenção</h3><div class="row"><button id="exportBtn">Baixar backup dos dados</button><label class="tab" for="importFile">Importar backup JSON</label><input id="importFile" type="file" accept="application/json" style="max-width:220px"></div><p class="small">Faça backup regularmente. Limpar os dados do navegador pode apagar os registros deste aparelho.</p><button class="danger" id="resetBtn">Apagar todos os dados deste navegador</button></div>
+</main><footer>ELITE DA POLÔNIA • Painel administrativo não oficial do Reduto Online</footer>
+<script>
+const KEY='elitePoloniaPanelV1';let db=load();
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{members:[],ops:[],fund:[],police:0}}catch{return{members:[],ops:[],fund:[],police:0}}}
+function save(){localStorage.setItem(KEY,JSON.stringify(db));render()}
+function fmt(n){return (Number(n)||0).toLocaleString('pt-BR')}
+function sumOps(){return db.ops.reduce((s,o)=>s+o.value,0)}
+function balance(){return db.fund.reduce((s,x)=>s+(x.type==='in'?x.value:-x.value),0)}
+function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('hidden',p.id!==id));document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>go(b.dataset.tab)));
+function render(){
+ document.getElementById('memberCount').textContent=db.members.length+' / 15';document.getElementById('fundTotal').textContent=fmt(balance());document.getElementById('grossTotal').textContent=fmt(sumOps());
+ document.getElementById('bonusDisplay').textContent=(Number(db.police)||0)+'%';
+ document.getElementById('police').value=db.police||0;document.getElementById('shopPay').textContent=fmt(40000*(1+(db.police||0)/100));document.getElementById('boxPay').textContent=fmt(90000*(1+(db.police||0)/100));
+ const mb=document.getElementById('membersBody');mb.innerHTML=db.members.length?db.members.map((m,i)=>`<tr><td>${esc(m.name)}</td><td>${esc(m.role)}</td><td>${esc(m.status)}</td><td><button data-delmember="${i}">Excluir</button></td></tr>`).join(''):'<tr><td colspan="4" class="empty">Nenhum integrante cadastrado.</td></tr>';
+ const sel=document.getElementById('opMember');sel.innerHTML=db.members.map((m,i)=>`<option value="${i}">${esc(m.name)}</option>`).join('');if(!db.members.length)sel.innerHTML='<option value="">Cadastre um integrante primeiro</option>';
+ document.getElementById('opsBody').innerHTML=db.ops.length?[...db.ops].reverse().map(o=>`<tr><td>${o.date}</td><td>${esc(o.member)}</td><td>${esc(o.type)}</td><td>${fmt(o.value)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">Nenhuma atividade registrada.</td></tr>';
+ document.getElementById('fundBalance').textContent=fmt(balance());
+ document.getElementById('fundBody').innerHTML=db.fund.length?[...db.fund].reverse().map(x=>`<tr><td>${x.date}</td><td>${x.type==='in'?'Entrada':'Saída'} — ${esc(x.note)}</td><td>${x.type==='in'?'+':'−'}${fmt(x.value)}</td></tr>`).join(''):'<tr><td colspan="3" class="empty">Nenhuma movimentação.</td></tr>';
+ const totals={};db.ops.forEach(o=>totals[o.member]=(totals[o.member]||0)+o.value);const ranks=Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+ document.getElementById('rankingBody').innerHTML=ranks.length?ranks.map(([n,v],i)=>`<tr><td>${i+1}º</td><td>${esc(n)}</td><td>${fmt(v)}</td></tr>`).join(''):'<tr><td colspan="3" class="empty">O ranking aparecerá após os primeiros registros.</td></tr>';
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+document.getElementById('police').addEventListener('change',e=>{db.police=Math.max(0,Number(e.target.value)||0);save()});
+document.getElementById('addMember').addEventListener('click',()=>{let name=document.getElementById('mName').value.trim();if(!name)return alert('Digite o nick do integrante.');if(db.members.length>=15)return alert('O limite é de 15 integrantes.');if(db.members.some(m=>m.name.toLowerCase()===name.toLowerCase()))return alert('Esse nick já está cadastrado.');db.members.push({name,role:document.getElementById('mRole').value,status:document.getElementById('mStatus').value});document.getElementById('mName').value='';save()});
+document.getElementById('membersBody').addEventListener('click',e=>{let i=e.target.dataset.delmember;if(i!==undefined&&confirm('Excluir este integrante? O histórico já registrado será mantido.')){db.members.splice(Number(i),1);save()}});
+document.getElementById('opType').addEventListener('change',e=>document.getElementById('customWrap').classList.toggle('hidden',e.target.value!=='other'));
+document.getElementById('addOperation').addEventListener('click',()=>{let idx=document.getElementById('opMember').value;if(idx===''||!db.members[idx])return alert('Cadastre e selecione um integrante.');let type=document.getElementById('opType').value,qty=Math.max(1,Number(document.getElementById('opQty').value)||1),p=Math.max(0,Number(document.getElementById('opPolice').value)||0),base=type==='shop'?40000:type==='box'?90000:0,value=type==='other'?Math.max(0,Number(document.getElementById('opCustom').value)||0):base*qty*(1+p/100);if(!value)return alert('Informe um valor válido.');db.ops.push({member:db.members[idx].name,type:type==='shop'?'Lojinha':type==='box'?'Caixinha':'Outro',value,date:new Date().toLocaleDateString('pt-BR'),note:document.getElementById('opNote').value});save();alert('Registro salvo neste navegador.')});
+document.getElementById('addFund').addEventListener('click',()=>{let value=Number(document.getElementById('fundAmount').value);if(!value||value<=0)return alert('Informe um valor maior que zero.');let type=document.getElementById('fundType').value;if(type==='out'&&value>balance())return alert('A saída é maior que o saldo disponível.');db.fund.push({type,value,note:document.getElementById('fundNote').value||'Sem descrição',date:new Date().toLocaleDateString('pt-BR')});save();document.getElementById('fundAmount').value='';document.getElementById('fundNote').value=''});
+document.getElementById('exportBtn').addEventListener('click',()=>{let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='backup-elite-da-polonia.json';a.click();URL.revokeObjectURL(a.href)});
+document.getElementById('importFile').addEventListener('change',async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.members)||!Array.isArray(d.ops)||!Array.isArray(d.fund))throw Error();if(!confirm('Importar backup e substituir os dados atuais?'))return;db=d;save();alert('Backup importado.')}catch{alert('Arquivo de backup inválido.')}e.target.value=''});
+document.getElementById('resetBtn').addEventListener('click',()=>{if(confirm('Tem certeza? Isso apaga todos os dados salvos neste navegador.')){db={members:[],ops:[],fund:[],police:0};save()}});
+render();
+</script>
+</body></html>
